@@ -128,7 +128,8 @@ public class HideManager implements Listener {
                 .mapToInt(Integer::parseInt)
                 .max().orElse(1);
 
-        return Math.min(1, level);
+        return Math.max(level, 1);
+
     }
 
     public int checkLevelFromMap(Player player) {
