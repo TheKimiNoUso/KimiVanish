@@ -174,7 +174,11 @@ public class HideManager implements Listener {
 
         if (recentlySneaked.contains(player.getUniqueId())) {
             recentlySneaked.remove(player.getUniqueId());
-            player.setGameMode(GameMode.SPECTATOR);
+            if (player.getGameMode() != GameMode.SPECTATOR) {
+                player.setGameMode(GameMode.SPECTATOR);
+            } else {
+                player.setGameMode(Bukkit.getServer().getDefaultGameMode());
+            }
         } else {
             recentlySneaked.add(player.getUniqueId());
             Bukkit.getScheduler().runTaskLater(KimiVanish.getPlugin(KimiVanish.class), () -> recentlySneaked.remove(player.getUniqueId()), 10L);
