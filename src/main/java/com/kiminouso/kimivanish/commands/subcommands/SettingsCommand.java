@@ -1,10 +1,7 @@
 package com.kiminouso.kimivanish.commands.subcommands;
 
 import com.kiminouso.kimivanish.ConfigUtils;
-import com.kiminouso.kimivanish.commands.subcommands.settings.InteractSettingCommand;
-import com.kiminouso.kimivanish.commands.subcommands.settings.ItemSettingCommand;
-import com.kiminouso.kimivanish.commands.subcommands.settings.LocationSettingCommand;
-import com.kiminouso.kimivanish.commands.subcommands.settings.NotifySettingCommand;
+import com.kiminouso.kimivanish.commands.subcommands.settings.*;
 import me.tippie.tippieutils.commands.TippieCommand;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -25,6 +22,7 @@ public class SettingsCommand extends TippieCommand {
         super.getSubCommands().add(new NotifySettingCommand());
         super.getSubCommands().add(new ItemSettingCommand());
         super.getSubCommands().add(new LocationSettingCommand());
+        super.getSubCommands().add(new FlySettingCommand());
     }
 
     protected void sendHelpMessage(CommandSender sender, String label, String prefix) {

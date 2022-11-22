@@ -44,4 +44,7 @@ messages:
     nightvision:
       on: "&7You have toggled nightvision &aON"
       off: "&7You have toggled nightvision &cOFF"
+    flight:
+      on: "&7You have toggled nightvision &aON"
+      off: "&7You have toggled nightvision &cOFF"
     confirm-message: "&7You sent the message: &9{0}&7. Did you mean to do this? If so, &9resend the same message&7."

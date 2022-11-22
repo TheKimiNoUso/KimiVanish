@@ -55,7 +55,7 @@ public class HideManager implements Listener {
             if (!entry.isEmpty())
                 return;
 
-            KimiVanish.getPlugin(KimiVanish.class).getStorage().registerVanishUser(player.getUniqueId(), false, false, false, false, false);
+            KimiVanish.getPlugin(KimiVanish.class).getStorage().registerVanishUser(player.getUniqueId(), false, false, false, false, false, false);
         });
     }
 

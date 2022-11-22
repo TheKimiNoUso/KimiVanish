@@ -15,6 +15,7 @@ public class VanishManager {
     public final Set<UUID> interactPlayers = new HashSet<>();
     public final Set<UUID> notifyPlayers = new HashSet<>();
     public final Set<UUID> itemPlayers = new HashSet<>();
+    public final Set<UUID> flightPlayers = new HashSet<>();
     public final Set<UUID> locationPlayers = new HashSet<>();
 
     public void clearLists() {
@@ -23,6 +24,7 @@ public class VanishManager {
         interactPlayers.clear();
         notifyPlayers.clear();
         itemPlayers.clear();
+        flightPlayers.clear();
         locationPlayers.clear();
     }
 
@@ -55,6 +57,9 @@ public class VanishManager {
 
             if (entry.get(0).nightVisionSetting())
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true,false,false));
+
+            if (entry.get(0).flightSetting())
+                KimiVanish.getPlugin(KimiVanish.class).getVanishManager().flightPlayers.add(player.getUniqueId());
         });
     }
 

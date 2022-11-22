@@ -20,6 +20,7 @@ public final class KimiVanish extends JavaPlugin {
     private VanishCommand vanishCommand;
     private ItemSettingCommand itemSettingCommand;
     private NotifySettingCommand notifySettingCommand;
+    private FlySettingCommand flySettingCommand;
     private InteractSettingCommand interactSettingCommand;
     private NightvisionSettingCommand nightvisionSettingCommand;
     private LocationSettingCommand locationSettingCommand;
@@ -36,6 +37,7 @@ public final class KimiVanish extends JavaPlugin {
         vanishListeners = new VanishListeners();
         itemSettingCommand = new ItemSettingCommand();
         notifySettingCommand = new NotifySettingCommand();
+        flySettingCommand = new FlySettingCommand();
         interactSettingCommand = new InteractSettingCommand();
         locationSettingCommand = new LocationSettingCommand();
         nightvisionSettingCommand = new NightvisionSettingCommand();
@@ -49,6 +51,7 @@ public final class KimiVanish extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(this.notifySettingCommand, this);
         Bukkit.getServer().getPluginManager().registerEvents(this.interactSettingCommand, this);
         Bukkit.getServer().getPluginManager().registerEvents(this.nightvisionSettingCommand, this);
+        Bukkit.getServer().getPluginManager().registerEvents(this.flySettingCommand, this);
         Bukkit.getServer().getPluginManager().registerEvents(this.locationSettingCommand, this);
         Bukkit.getServer().getPluginManager().registerEvents(this.hideManager, this);
 

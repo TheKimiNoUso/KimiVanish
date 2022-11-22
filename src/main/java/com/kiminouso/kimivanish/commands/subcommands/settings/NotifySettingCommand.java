@@ -3,8 +3,11 @@ package com.kiminouso.kimivanish.commands.subcommands.settings;
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
 import com.kiminouso.kimivanish.Storage;
+import com.kiminouso.kimivanish.listeners.HidePlayerEvent;
+import com.kiminouso.kimivanish.listeners.UnhidePlayerEvent;
 import com.kiminouso.kimivanish.listeners.VanishStatusUpdateEvent;
 import me.tippie.tippieutils.commands.TippieCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -46,8 +49,28 @@ public class NotifySettingCommand extends TippieCommand implements Listener {
         });
     }
 
-    private boolean shouldNotify(Player player) {
-        return KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.contains(player.getUniqueId());
+    @EventHandler
+    private void onHide(HidePlayerEvent event) {
+        sendMessage("messages.vanish.notify.player-vanished", event.getPlayer());
+    }
+
+    @EventHandler
+    private void onUnhide(UnhidePlayerEvent event) {
+        sendMessage("messages.vanish.notify.player-unvanished", event.getPlayer());
+    }
+
+    private void sendMessage(String path, Player vanishedPlayer) {
+        if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.isEmpty())
+            return;
+
+        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.forEach(uuid -> {
+            Player player = Bukkit.getPlayer(uuid);
+
+            if (player == null)
+                return;
+
+            player.sendMessage(ConfigUtils.getMessage(path, vanishedPlayer, vanishedPlayer.getName()));
+        });
     }
 
     @EventHandler

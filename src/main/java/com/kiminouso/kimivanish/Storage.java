@@ -42,7 +42,8 @@ public class Storage extends SQLStorage {
                             rs.getBoolean("INTERACT_SETTING"),
                             rs.getBoolean("NOTIFY_SETTING"),
                             rs.getBoolean("LOCATION_SETTING"),
-                            rs.getBoolean("NIGHTVISION_SETTING")
+                            rs.getBoolean("NIGHTVISION_SETTING"),
+                            rs.getBoolean("FLIGHT_SETTING")
                     );
                     result.add(entry);
                 }
@@ -141,16 +142,12 @@ public class Storage extends SQLStorage {
         });
     }
 
-    @SqlQuery("INSERT INTO USER_PREFERENCES (VANISH_USER, ITEM_SETTING, INTERACT_SETTING, NOTIFY_SETTING, LOCATION_SETTING, NIGHTVISION_SETTING) VALUES (?, ?, ?, ?, ?, ?)")
-    public CompletableFuture<Void> registerVanishUser(UUID uuid, boolean itemSetting, boolean interactSetting, boolean notifySetting, boolean locationSetting, boolean nightVisionSetting) {
+    @SqlQuery("UPDATE USER_PREFERENCES SET FLIGHT_SETTING = ? WHERE VANISH_USER = ?")
+    public CompletableFuture<Void> setFightSetting(UUID uuid, boolean setting) {
         return prepareStatement((stmt) -> {
             try {
-                stmt.setObject(1, uuid);
-                stmt.setBoolean(2, itemSetting);
-                stmt.setBoolean(3, interactSetting);
-                stmt.setBoolean(4, notifySetting);
-                stmt.setBoolean(5, locationSetting);
-                stmt.setBoolean(6, nightVisionSetting);
+                stmt.setBoolean(1, setting);
+                stmt.setObject(2, uuid);
                 stmt.execute();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -162,5 +159,27 @@ public class Storage extends SQLStorage {
         });
     }
 
-    public static record VanishUser(UUID uuid, boolean notifySetting, boolean itemSetting, boolean interactSetting, boolean locationSetting, boolean nightVisionSetting) { }
+    @SqlQuery("INSERT INTO USER_PREFERENCES (VANISH_USER, ITEM_SETTING, INTERACT_SETTING, NOTIFY_SETTING, LOCATION_SETTING, NIGHTVISION_SETTING, FLIGHT_SETTING) VALUES (?, ?, ?, ?, ?, ?, ?)")
+    public CompletableFuture<Void> registerVanishUser(UUID uuid, boolean itemSetting, boolean interactSetting, boolean notifySetting, boolean locationSetting, boolean nightVisionSetting, boolean flightSetting) {
+        return prepareStatement((stmt) -> {
+            try {
+                stmt.setObject(1, uuid);
+                stmt.setBoolean(2, itemSetting);
+                stmt.setBoolean(3, interactSetting);
+                stmt.setBoolean(4, notifySetting);
+                stmt.setBoolean(5, locationSetting);
+                stmt.setBoolean(6, nightVisionSetting);
+                stmt.setBoolean(7, flightSetting);
+                stmt.execute();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return (Void) null;
+        }).exceptionally((e) -> {
+            e.printStackTrace();
+            return null;
+        });
+    }
+
+    public static record VanishUser(UUID uuid, boolean notifySetting, boolean itemSetting, boolean interactSetting, boolean locationSetting, boolean nightVisionSetting, boolean flightSetting) { }
 }
