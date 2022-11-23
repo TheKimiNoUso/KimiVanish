@@ -26,7 +26,7 @@ public class VanishCommand extends TippieCommand {
         if (!(sender instanceof Player player))
             return;
 
-        sender.sendMessage(ConfigUtils.getMessage("messages.vanish.help.general", player));
+        sender.sendMessage(ConfigUtils.getMessage("messages.vanish.help.general-header", player));
 
         getSubCommands().forEach(cmd -> {
             if (!player.hasPermission(cmd.getPermission()))

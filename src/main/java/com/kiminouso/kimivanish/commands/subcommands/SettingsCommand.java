@@ -29,7 +29,7 @@ public class SettingsCommand extends TippieCommand {
         if (!(sender instanceof Player player))
             return;
 
-        sender.sendMessage(ConfigUtils.getMessage("messages.vanish.help.settings", player));
+        sender.sendMessage(ConfigUtils.getMessage("messages.vanish.help.settings-header", player));
 
         getSubCommands().forEach(cmd -> {
             if (!player.hasPermission(cmd.getPermission()))
