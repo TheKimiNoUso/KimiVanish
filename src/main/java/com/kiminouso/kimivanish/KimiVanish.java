@@ -17,14 +17,6 @@ public final class KimiVanish extends JavaPlugin {
     private VanishManager vanishManager;
     @Getter
     private HideManager hideManager;
-    private VanishCommand vanishCommand;
-    private ItemSettingCommand itemSettingCommand;
-    private NotifySettingCommand notifySettingCommand;
-    private FlySettingCommand flySettingCommand;
-    private InteractSettingCommand interactSettingCommand;
-    private NightvisionSettingCommand nightvisionSettingCommand;
-    private LocationSettingCommand locationSettingCommand;
-    private VanishListeners vanishListeners;
     @Getter private GuiManager guiManager;
 
     @Override
@@ -32,27 +24,26 @@ public final class KimiVanish extends JavaPlugin {
         saveDefaultConfig();
 
         vanishManager = new VanishManager();
-        vanishCommand = new VanishCommand();
+        VanishCommand vanishCommand = new VanishCommand();
         hideManager = new HideManager();
-        vanishListeners = new VanishListeners();
-        itemSettingCommand = new ItemSettingCommand();
-        notifySettingCommand = new NotifySettingCommand();
-        flySettingCommand = new FlySettingCommand();
-        interactSettingCommand = new InteractSettingCommand();
-        locationSettingCommand = new LocationSettingCommand();
-        nightvisionSettingCommand = new NightvisionSettingCommand();
+        VanishListeners vanishListeners = new VanishListeners();
+        ItemSettingCommand itemSettingCommand = new ItemSettingCommand();
+        NotifySettingCommand notifySettingCommand = new NotifySettingCommand();
+        FlySettingCommand flySettingCommand = new FlySettingCommand();
+        InteractSettingCommand interactSettingCommand = new InteractSettingCommand();
+        LocationSettingCommand locationSettingCommand = new LocationSettingCommand();
+        NightvisionSettingCommand nightvisionSettingCommand = new NightvisionSettingCommand();
         guiManager = new GuiManager(this);
         storage = new Storage(this);
 
-        Bukkit.getPluginCommand("vanish").setExecutor(this.vanishCommand);
-        Bukkit.getPluginCommand("vanish").setTabCompleter(this.vanishCommand);
-        Bukkit.getServer().getPluginManager().registerEvents(this.vanishListeners, this);
-        Bukkit.getServer().getPluginManager().registerEvents(this.itemSettingCommand, this);
-        Bukkit.getServer().getPluginManager().registerEvents(this.notifySettingCommand, this);
-        Bukkit.getServer().getPluginManager().registerEvents(this.interactSettingCommand, this);
-        Bukkit.getServer().getPluginManager().registerEvents(this.nightvisionSettingCommand, this);
-        Bukkit.getServer().getPluginManager().registerEvents(this.flySettingCommand, this);
-        Bukkit.getServer().getPluginManager().registerEvents(this.locationSettingCommand, this);
+        Bukkit.getPluginCommand("vanish").setExecutor(vanishCommand);
+        Bukkit.getServer().getPluginManager().registerEvents(vanishListeners, this);
+        Bukkit.getServer().getPluginManager().registerEvents(itemSettingCommand, this);
+        Bukkit.getServer().getPluginManager().registerEvents(notifySettingCommand, this);
+        Bukkit.getServer().getPluginManager().registerEvents(interactSettingCommand, this);
+        Bukkit.getServer().getPluginManager().registerEvents(nightvisionSettingCommand, this);
+        Bukkit.getServer().getPluginManager().registerEvents(flySettingCommand, this);
+        Bukkit.getServer().getPluginManager().registerEvents(locationSettingCommand, this);
         Bukkit.getServer().getPluginManager().registerEvents(this.hideManager, this);
 
         if (Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {

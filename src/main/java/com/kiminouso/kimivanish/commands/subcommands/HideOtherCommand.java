@@ -20,12 +20,19 @@ public class HideOtherCommand extends TippieCommand {
 
     @Override
     public void executes(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) throws NoSuchMethodException {
+        if (args.length < 1) {
+            sender.sendMessage("Please provide an username of an online player.");
+            return;
+        }
+
         Player player = Bukkit.getPlayer(args[0]);
 
         if (player == null) {
             sender.sendMessage("Player couldn't be found");
             return;
         }
+
+
 
         int level = KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevel(player);
 
