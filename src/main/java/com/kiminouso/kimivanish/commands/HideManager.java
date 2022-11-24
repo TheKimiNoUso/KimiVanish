@@ -91,24 +91,22 @@ public class HideManager implements Listener {
     }
 
     public int checkLevelFromPermission(Player player) {
-        return player.getEffectivePermissions().stream()
+        int level = player.getEffectivePermissions().stream()
                 .filter(perm -> perm.getPermission().startsWith("kimivanish.level."))
                 .map(perm -> perm.getPermission().replace("kimivanish.level.", ""))
                 .mapToInt(permInt -> Integer.parseInt(permInt))
-                .max().orElse(0);
+                .max().orElse(1);
+
+        return (level == 0) ? 1 : level;
     }
 
     public int checkLevelFromMap(Player player) {
         System.out.println("From HideManager.checkLevelFromMap(1) "+ player);
         var optional = KimiVanish.getPlugin(KimiVanish.class).getVanishManager().vanishLevels
                 .entrySet().stream()
-                .filter(entry -> {
-                    System.out.println("From HideManager.checkLevelFromMap(2) "+entry.getValue().contains(player)); return entry.getValue().contains(player);}
-                ).findFirst().orElse(null);
+                .filter(entry -> entry.getValue().contains(player)).findFirst().orElse(null);
 
-        System.out.println("From HideManager.checkLevelFromMap(3) "+optional);
-
-        if (optional == null) return 0;
+        if (optional == null) return 1;
         else return optional.getKey();
     }
 

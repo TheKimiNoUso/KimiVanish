@@ -34,7 +34,7 @@ public class SetLevelCommand extends TippieCommand {
         int level = hideManager.checkLevelFromPermission(player);
         int futureLevel;
 
-        if (level == 0) {
+        if (level == 1 || level == 0) {
             player.sendMessage(ConfigUtils.getMessage("messages.vanish.set-level.deny.lowest-level", player));
             return;
         }
@@ -65,7 +65,7 @@ public class SetLevelCommand extends TippieCommand {
     public List<String> completes(CommandSender sender, Command command, String alias, String[] args) {
         Player player = (Player) sender;
         List<String> availableLevels = new ArrayList<>();
-        for (int i = 0; i <= KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(player); i++) {
+        for (int i = 1; i <= KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(player); i++) {
             availableLevels.add(String.valueOf(i));
         }
 
