@@ -51,15 +51,15 @@ public class NotifySettingCommand extends TippieCommand implements Listener {
 
     @EventHandler
     private void onHide(HidePlayerEvent event) {
-        sendMessage("messages.vanish.notify.player-vanished", event.getPlayer());
+        sendMessage("messages.vanish.notify.player-vanished", event.getPlayer(), String.valueOf(KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromMap(event.getPlayer())));
     }
 
     @EventHandler
     private void onUnhide(UnhidePlayerEvent event) {
-        sendMessage("messages.vanish.notify.player-unvanished", event.getPlayer());
+        sendMessage("messages.vanish.notify.player-unvanished", event.getPlayer(), "");
     }
 
-    private void sendMessage(String path, Player vanishedPlayer) {
+    private void sendMessage(String path, Player vanishedPlayer, String level) {
         if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.isEmpty())
             return;
 
@@ -69,7 +69,7 @@ public class NotifySettingCommand extends TippieCommand implements Listener {
             if (player == null)
                 return;
 
-            player.sendMessage(ConfigUtils.getMessage(path, vanishedPlayer, vanishedPlayer.getName()));
+            player.sendMessage(ConfigUtils.getMessage(path, vanishedPlayer, vanishedPlayer.getName(), level));
         });
     }
 
