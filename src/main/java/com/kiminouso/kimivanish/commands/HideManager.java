@@ -96,7 +96,7 @@ public class HideManager implements Listener {
                 .mapToInt(permInt -> Integer.parseInt(permInt))
                 .max().orElse(1);
 
-        return (level <= 0) ? 1 : level;
+        return Math.min(1, level);
     }
 
     public int checkLevelFromMap(Player player) {
