@@ -18,9 +18,6 @@ public class ConfigUtils {
         if (vars == null || fromConfig == null)
             return prefix + " Unknown Message";
 
-//        if (vars.length == 0)
-//            return prefix + " " + fromConfig;
-
         for (int i = 0; i < vars.length; i++) {
             fromConfig = fromConfig.replace("{" + i + "}", vars[i]);
         }

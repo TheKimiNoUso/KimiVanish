@@ -29,7 +29,7 @@ public class VanishManager {
     }
 
     public void addPlayer(Player player, int level) {
-        vanishLevels.compute(level,(key, value) -> {
+        vanishLevels.compute(level, (key, value) -> {
             if (value == null) {
                 value = new ArrayList<>();
             }
@@ -37,7 +37,12 @@ public class VanishManager {
             return value;
         });
 
-        vanishLevels.headMap(level,true).values().forEach(sublist -> sublist.forEach(p -> player.showPlayer(KimiVanish.getPlugin(KimiVanish.class), p)));
+        vanishLevels.headMap(level, true).values().forEach(sublist -> sublist.forEach(p -> {
+            if (!p.hasPermission("kimivanish.hide"))
+                return;
+
+            player.showPlayer(KimiVanish.getPlugin(KimiVanish.class), p);
+        }));
 
         KimiVanish.getPlugin(KimiVanish.class).getStorage().findVanishUser(player.getUniqueId()).thenAccept((entry) -> {
             if (entry.isEmpty())
@@ -56,7 +61,7 @@ public class VanishManager {
                 KimiVanish.getPlugin(KimiVanish.class).getVanishManager().locationPlayers.add(player.getUniqueId());
 
             if (entry.get(0).nightVisionSetting())
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true,false,false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true, false, false));
 
             if (entry.get(0).flightSetting())
                 KimiVanish.getPlugin(KimiVanish.class).getVanishManager().flightPlayers.add(player.getUniqueId());

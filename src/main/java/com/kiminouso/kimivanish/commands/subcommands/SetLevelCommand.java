@@ -25,6 +25,11 @@ public class SetLevelCommand extends TippieCommand {
 
     @Override
     public void executes(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) throws NoSuchMethodException {
+        if (args.length < 1) {
+            sender.sendMessage("Missing arguments");
+            return;
+        }
+
         if (!(sender instanceof Player player))
             return;
 
@@ -34,7 +39,7 @@ public class SetLevelCommand extends TippieCommand {
         int level = hideManager.checkLevelFromPermission(player);
         int futureLevel;
 
-        if (level == 1 || level == 0) {
+        if (level <= 1) {
             player.sendMessage(ConfigUtils.getMessage("messages.vanish.set-level.deny.lowest-level", player));
             return;
         }

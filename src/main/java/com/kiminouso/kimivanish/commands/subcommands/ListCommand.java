@@ -65,7 +65,7 @@ public class ListCommand extends TippieCommand {
 
                 skull.setOwningPlayer(p);
                 skull.setDisplayName("§9" + p.getName());
-                skull.setLore(List.of("§7Level " + KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromMap(p)));
+                skull.setLore(List.of("§7Actual Level: " + KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(p),"§7Effective Level: " + KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromMap(p)));
                 item.setItemMeta(skull);
 
                 builder.setSlot(count, item, (InventoryClickEvent, OpenGUI) -> {

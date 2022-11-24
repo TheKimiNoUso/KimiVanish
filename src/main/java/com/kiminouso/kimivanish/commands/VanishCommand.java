@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class VanishCommand extends TippieCommand {
-    public VanishCommand(){
+    public VanishCommand() {
         super.prefix = ConfigUtils.getMessage("prefix", false);
         super.name = "vanish";
         super.getSubCommands().add(new HideCommand());

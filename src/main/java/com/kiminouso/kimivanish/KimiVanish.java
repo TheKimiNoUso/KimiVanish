@@ -17,7 +17,8 @@ public final class KimiVanish extends JavaPlugin {
     private VanishManager vanishManager;
     @Getter
     private HideManager hideManager;
-    @Getter private GuiManager guiManager;
+    @Getter
+    private GuiManager guiManager;
 
     @Override
     public void onEnable() {
@@ -59,24 +60,22 @@ public final class KimiVanish extends JavaPlugin {
             Bukkit.getServer().getLogger().log(Level.SEVERE, "Could not find Essentials! Essentials hook is disabled.");
         }
 
-        Bukkit.getScheduler().runTaskTimer(this, () -> vanishManager.canVanish.forEach(player -> {
-            int level = hideManager.checkLevelFromPermission(Bukkit.getPlayer(player));
-            vanishManager.vanishLevels.tailMap(level, true)
-                    .values()
-                    .forEach(sublist -> sublist.forEach(p -> Bukkit.getPlayer(player).showPlayer(this, p))
-                    );
-        }), 0L, 1L);
+        hideManager.startVanishTask();
 
         if (KimiVanish.getPlugin(KimiVanish.class).getConfig().getBoolean("settings.vanish.actionbar")) {
-            hideManager.start();
+            hideManager.startActionBarTask();
         }
     }
 
     @Override
     public void onDisable() {
         hideManager.unhideAll();
-        if (hideManager.isActive()) {
-            hideManager.end();
+        if (hideManager.vanishTaskIsActive()) {
+            hideManager.endVanishTask();
+        }
+
+        if (hideManager.actionBarTaskIsActive()) {
+            hideManager.endActionBarTask();
         }
     }
 }

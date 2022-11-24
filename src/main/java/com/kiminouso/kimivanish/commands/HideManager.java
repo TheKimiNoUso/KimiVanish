@@ -25,7 +25,6 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -97,11 +96,11 @@ public class HideManager implements Listener {
                 .mapToInt(permInt -> Integer.parseInt(permInt))
                 .max().orElse(1);
 
-        return (level == 0) ? 1 : level;
+        return (level <= 0) ? 1 : level;
     }
 
     public int checkLevelFromMap(Player player) {
-        System.out.println("From HideManager.checkLevelFromMap(1) "+ player);
+        System.out.println("From HideManager.checkLevelFromMap(1) " + player);
         var optional = KimiVanish.getPlugin(KimiVanish.class).getVanishManager().vanishLevels
                 .entrySet().stream()
                 .filter(entry -> entry.getValue().contains(player)).findFirst().orElse(null);
@@ -112,12 +111,12 @@ public class HideManager implements Listener {
 
     @EventHandler
     private void onPlayerJoin(PlayerJoinEvent event) {
-        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().addPlayer(event.getPlayer(), checkLevelFromPermission(event.getPlayer()));
         KimiVanish.getPlugin(KimiVanish.class).getVanishManager().currentlyVanished.forEach(uuid -> {
             event.getPlayer().hidePlayer(KimiVanish.getPlugin(KimiVanish.class), Bukkit.getPlayer(uuid));
         });
 
         if (event.getPlayer().hasPermission("kimivanish.hide")) {
+            KimiVanish.getPlugin(KimiVanish.class).getVanishManager().addPlayer(event.getPlayer(), checkLevelFromPermission(event.getPlayer()));
             KimiVanish.getPlugin(KimiVanish.class).getVanishManager().canVanish.add(event.getPlayer().getUniqueId());
         }
     }
@@ -221,23 +220,49 @@ public class HideManager implements Listener {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ConfigUtils.getMessage("messages.vanish.bossbar", false)));
     });
 
-    private BukkitTask activeTask = null;
+    private final Runnable vanishTask = () -> KimiVanish.getPlugin(KimiVanish.class).getVanishManager().canVanish.forEach(player -> {
+        int level = KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(Bukkit.getPlayer(player));
+        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().vanishLevels.tailMap(level, true)
+                .values().forEach(sublist -> sublist.forEach(p -> Bukkit.getPlayer(player).showPlayer(KimiVanish.getPlugin(KimiVanish.class), p)));
+    });
 
-    public void start() {
-        if (activeTask != null)
-            activeTask.cancel();
+    private BukkitTask activeActionBarTask = null;
 
-        activeTask = Bukkit.getScheduler().runTaskTimer(KimiVanish.getPlugin(KimiVanish.class), actionBarTask, 0, 20L);
+    public void startActionBarTask() {
+        if (activeActionBarTask != null)
+            activeActionBarTask.cancel();
+
+        activeActionBarTask = Bukkit.getScheduler().runTaskTimer(KimiVanish.getPlugin(KimiVanish.class), actionBarTask, 0, 20L);
     }
 
-    public void end() {
-        if (activeTask != null) {
-            activeTask.cancel();
-            activeTask = null;
+    public void endActionBarTask() {
+        if (activeActionBarTask != null) {
+            activeActionBarTask.cancel();
+            activeActionBarTask = null;
         }
     }
 
-    public boolean isActive() {
-        return activeTask != null;
+    public boolean actionBarTaskIsActive() {
+        return activeActionBarTask != null;
+    }
+
+    private BukkitTask activeVanishTask = null;
+
+    public void startVanishTask() {
+        if (activeVanishTask != null)
+            activeVanishTask.cancel();
+
+        activeVanishTask = Bukkit.getScheduler().runTaskTimer(KimiVanish.getPlugin(KimiVanish.class), vanishTask, 0, 1L);
+    }
+
+    public void endVanishTask() {
+        if (activeVanishTask != null) {
+            activeVanishTask.cancel();
+            activeVanishTask = null;
+        }
+    }
+
+    public boolean vanishTaskIsActive() {
+        return activeVanishTask != null;
     }
 }
