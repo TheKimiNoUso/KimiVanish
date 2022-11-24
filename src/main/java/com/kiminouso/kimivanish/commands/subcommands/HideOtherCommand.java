@@ -34,7 +34,7 @@ public class HideOtherCommand extends TippieCommand {
 
 
 
-        int level = KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevel(player);
+        int level = KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(player);
 
         if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().currentlyVanished.contains(player.getUniqueId())) {
             KimiVanish.getPlugin(KimiVanish.class).getHideManager().RemoveVanishStatus(player);

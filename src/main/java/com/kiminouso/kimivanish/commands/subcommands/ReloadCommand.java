@@ -6,7 +6,6 @@ import me.tippie.tippieutils.commands.TippieCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class ReloadCommand extends TippieCommand {
@@ -29,7 +28,7 @@ public class ReloadCommand extends TippieCommand {
             if (!player.hasPermission("kimivanish.hide"))
                 return;
 
-            KimiVanish.getPlugin(KimiVanish.class).getVanishManager().addPlayer(player, KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevel(player));
+            KimiVanish.getPlugin(KimiVanish.class).getVanishManager().addPlayer(player, KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(player));
         });
         sender.sendMessage("Vanish players have been reloaded");
     }

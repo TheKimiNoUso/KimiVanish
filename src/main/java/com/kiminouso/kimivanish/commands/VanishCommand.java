@@ -19,6 +19,7 @@ public class VanishCommand extends TippieCommand {
         super.getSubCommands().add(new SettingsCommand());
         super.getSubCommands().add(new ListCommand());
         super.getSubCommands().add(new ReloadCommand());
+        super.getSubCommands().add(new SetLevelCommand());
     }
 
     @Override

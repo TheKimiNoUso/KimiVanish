@@ -12,6 +12,12 @@ settings:
 
 messages:
   vanish:
+    set-level:
+      deny:
+        lowest-level: "&cYou are currently at the lowest level."
+        not-integer: "&cYou haven't entered a valid number."
+        not-available: "&cYou cannot access this level as it is higher than yours."
+      allow: "&aYou have been vanished at level {0}"
     list:
       chat: "&f &9Level {0}:&8 - &7{1}"
       empty: "&cNo one is currently in vanish."

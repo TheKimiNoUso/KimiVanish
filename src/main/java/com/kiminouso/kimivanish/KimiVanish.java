@@ -60,7 +60,7 @@ public final class KimiVanish extends JavaPlugin {
         }
 
         Bukkit.getScheduler().runTaskTimer(this, () -> vanishManager.canVanish.forEach(player -> {
-            int level = hideManager.checkLevel(Bukkit.getPlayer(player));
+            int level = hideManager.checkLevelFromPermission(Bukkit.getPlayer(player));
             vanishManager.vanishLevels.tailMap(level, true)
                     .values()
                     .forEach(sublist -> sublist.forEach(p -> Bukkit.getPlayer(player).showPlayer(this, p))
