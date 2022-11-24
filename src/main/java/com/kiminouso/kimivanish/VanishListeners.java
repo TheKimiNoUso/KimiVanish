@@ -1,7 +1,6 @@
 package com.kiminouso.kimivanish;
 
-import com.kiminouso.kimivanish.listeners.VanishStatusUpdateEvent;
-import net.md_5.bungee.api.chat.ClickEvent;
+import com.kiminouso.kimivanish.events.VanishStatusUpdateEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,7 +12,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.*;
 
@@ -38,8 +36,19 @@ public class VanishListeners implements Listener {
 
     @EventHandler
     private void onVanishPlayerJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPermission("kimivanish.hide-onjoin")) {
-            KimiVanish.getPlugin(KimiVanish.class).getHideManager().VanishPlayer(event.getPlayer());
+        if (event.getPlayer().hasPermission("kimivanish.hide")) {
+            if (event.getPlayer().hasPermission("kimivanish.hide-onjoin"))
+                event.getPlayer().setInvisible(true); // Temporary invisiblity to not reveal player whilst loading
+
+
+            KimiVanishPlayer.loadPlayer(event.getPlayer()).thenAccept((v) -> {
+                if (event.getPlayer().hasPermission("kimivanish.hide-onjoin")) {
+                    Bukkit.getScheduler().runTask(KimiVanish.getPlugin(KimiVanish.class), () -> {
+                        event.getPlayer().setInvisible(false);
+                        KimiVanish.getPlugin(KimiVanish.class).getHideManager().vanishPlayer(event.getPlayer());
+                    });
+                }
+            });
         }
     }
 
@@ -51,7 +60,7 @@ public class VanishListeners implements Listener {
         if (!(event.getEntity() instanceof Player player))
             return;
 
-        if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().currentlyVanished.contains(player.getUniqueId())) {
+        if (KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(player)) {
             event.setCancelled(true);
         }
     }
@@ -79,7 +88,9 @@ public class VanishListeners implements Listener {
     }
 
     @EventHandler
-    private void onLeaveMessage(PlayerQuitEvent event) {
+    private void onPlayerLeave(PlayerQuitEvent event) {
+        KimiVanishPlayer.unloadPlayer(event.getPlayer());
+
         if (!KimiVanish.getPlugin(KimiVanish.class).getConfig().getBoolean("settings.vanish.hide-connection-message"))
             return;
 
@@ -104,13 +115,13 @@ public class VanishListeners implements Listener {
         if (!(event.getEntity() instanceof Player player))
             return;
 
-        if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().currentlyVanished.contains(player.getUniqueId()))
+        if (KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(player))
             event.setCancelled(true);
     }
 
     @EventHandler
     private void onVanishChat(AsyncPlayerChatEvent event) {
-        if (!KimiVanish.getPlugin(KimiVanish.class).getVanishManager().currentlyVanished.contains(event.getPlayer().getUniqueId()))
+        if (!KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(event.getPlayer()))
             return;
 
         Player player = event.getPlayer();

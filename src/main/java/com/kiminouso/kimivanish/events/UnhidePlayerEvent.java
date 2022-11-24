@@ -1,4 +1,4 @@
-package com.kiminouso.kimivanish.listeners;
+package com.kiminouso.kimivanish.events;
 
 import lombok.Getter;
 import org.bukkit.Location;
@@ -7,15 +7,14 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class HidePlayerEvent extends PlayerEvent {
+@Deprecated
+public class UnhidePlayerEvent extends PlayerEvent {
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    @Getter private final int vanishLevel;
     @Getter private final Location playerLocation;
 
-    public HidePlayerEvent(Player player, int level, Location location) {
+    public UnhidePlayerEvent(Player player, Location location) {
         super(player);
         this.player = player;
-        this.vanishLevel = level;
         this.playerLocation = location;
     }
 

@@ -2,6 +2,7 @@ package com.kiminouso.kimivanish.commands.subcommands;
 
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
+import com.kiminouso.kimivanish.KimiVanishPlayer;
 import me.tippie.tippieutils.commands.TippieCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -22,14 +23,6 @@ public class ReloadCommand extends TippieCommand {
         KimiVanish.getPlugin(KimiVanish.class).reloadConfig();
         sender.sendMessage("Config has been reloaded");
 
-        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().clearLists();
-
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            if (!player.hasPermission("kimivanish.hide"))
-                return;
-
-            KimiVanish.getPlugin(KimiVanish.class).getVanishManager().addPlayer(player, KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(player));
-        });
-        sender.sendMessage("Vanish players have been reloaded");
+//        sender.sendMessage("Vanish players have been reloaded");
     }
 }

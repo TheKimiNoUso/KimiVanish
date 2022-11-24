@@ -75,7 +75,7 @@ public class ListCommand extends TippieCommand {
                     if (InventoryClickEvent.isShiftClick()) {
                         if (player.hasPermission("kimivanish.hide.others")) {
                             Bukkit.getScheduler().runTaskLater(KimiVanish.getPlugin(KimiVanish.class), () -> openVanishGui(player, vanished), 10L);
-                            KimiVanish.getPlugin(KimiVanish.class).getHideManager().RemoveVanishStatus(player);
+                            KimiVanish.getPlugin(KimiVanish.class).getHideManager().showPlayer(player);
                             player.sendMessage(ConfigUtils.getMessage("messages.vanish.unhide", false));
                         }
                     }

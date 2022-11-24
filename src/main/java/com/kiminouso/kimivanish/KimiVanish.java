@@ -1,6 +1,5 @@
 package com.kiminouso.kimivanish;
 
-import com.kiminouso.kimivanish.commands.HideManager;
 import com.kiminouso.kimivanish.commands.VanishCommand;
 import com.kiminouso.kimivanish.commands.subcommands.settings.*;
 import lombok.Getter;
@@ -14,8 +13,6 @@ public final class KimiVanish extends JavaPlugin {
     @Getter
     private Storage storage;
     @Getter
-    private VanishManager vanishManager;
-    @Getter
     private HideManager hideManager;
     @Getter
     private GuiManager guiManager;
@@ -24,7 +21,6 @@ public final class KimiVanish extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
 
-        vanishManager = new VanishManager();
         VanishCommand vanishCommand = new VanishCommand();
         hideManager = new HideManager();
         VanishListeners vanishListeners = new VanishListeners();

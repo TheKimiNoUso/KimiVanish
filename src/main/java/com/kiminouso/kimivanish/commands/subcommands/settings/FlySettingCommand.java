@@ -3,8 +3,8 @@ package com.kiminouso.kimivanish.commands.subcommands.settings;
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
 import com.kiminouso.kimivanish.Storage;
-import com.kiminouso.kimivanish.listeners.HidePlayerEvent;
-import com.kiminouso.kimivanish.listeners.UnhidePlayerEvent;
+import com.kiminouso.kimivanish.events.HidePlayerEvent;
+import com.kiminouso.kimivanish.events.UnhidePlayerEvent;
 import me.tippie.tippieutils.commands.TippieCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,11 +13,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
-public class FlySettingCommand extends TippieCommand implements Listener {
+public class FlySettingCommand extends TippieCommand {
     public FlySettingCommand() {
         super.subLevel = 2;
         super.name = "fly";

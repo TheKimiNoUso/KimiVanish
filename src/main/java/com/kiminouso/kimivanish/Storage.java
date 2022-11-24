@@ -142,6 +142,60 @@ public class Storage extends SQLStorage {
         });
     }
 
+//    ITEM_SETTING BOOLEAN NOT NULL,
+//    INTERACT_SETTING BOOLEAN NOT NULL,
+//    NOTIFY_SETTING BOOLEAN NOT NULL,
+//    LOCATION_SETTING BOOLEAN NOT NULL,
+//    NIGHTVISION_SETTING BOOLEAN NOT NULL,
+//    FLIGHT_SETTING BOOLEAN NOT NULL
+    @SqlQuery("UPDATE USER_PREFERENCES SET ITEM_SETTING = ?, INTERACT_SETTING = ?, NOTIFY_SETTING = ?, LOCATION_SETTING = ?, NIGHTVISION_SETTING = ?, FLIGHT_SETTING = ? WHERE VANISH_USER = ?")
+    public CompletableFuture<Void> saveSettings(UUID uuid, KimiVanishPlayer.Settings settings) {
+        return prepareStatement((stmt) -> {
+            try {
+                stmt.setBoolean(1, settings.isItem());
+                stmt.setBoolean(2, settings.isInteract());
+                stmt.setBoolean(3, settings.isNotify());
+                stmt.setBoolean(4, settings.isLocation());
+                stmt.setBoolean(5, settings.isNightvision());
+                stmt.setBoolean(6, settings.isFly());
+                stmt.setObject(7, uuid);
+                stmt.execute();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return (Void) null;
+        }).exceptionally((e) -> {
+            e.printStackTrace();
+            return null;
+        });
+    }
+
+    @SqlQuery("SELECT * FROM USER_PREFERENCES WHERE VANISH_USER = ?")
+    public CompletableFuture<KimiVanishPlayer.Settings> loadSettings(UUID uuid) {
+        return prepareStatement((stmt) -> {
+            try {
+                stmt.setObject(1, uuid);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()){
+                    return new KimiVanishPlayer.Settings(
+                            rs.getBoolean("ITEM_SETTING"),
+                            rs.getBoolean("INTERACT_SETTING"),
+                            rs.getBoolean("NOTIFY_SETTING"),
+                            rs.getBoolean("LOCATION_SETTING"),
+                            rs.getBoolean("NIGHTVISION_SETTING"),
+                            rs.getBoolean("FLIGHT_SETTING")
+                    ); // Return the queried settings
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return new KimiVanishPlayer.Settings(); // Return default settings
+        }).exceptionally((e) -> {
+            e.printStackTrace();
+            return new KimiVanishPlayer.Settings(); // Also return default settings but log the error
+        });
+    }
+
     @SqlQuery("UPDATE USER_PREFERENCES SET FLIGHT_SETTING = ? WHERE VANISH_USER = ?")
     public CompletableFuture<Void> setFightSetting(UUID uuid, boolean setting) {
         return prepareStatement((stmt) -> {

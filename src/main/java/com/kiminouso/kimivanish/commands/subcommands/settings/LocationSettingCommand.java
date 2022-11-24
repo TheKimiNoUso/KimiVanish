@@ -3,7 +3,7 @@ package com.kiminouso.kimivanish.commands.subcommands.settings;
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
 import com.kiminouso.kimivanish.Storage;
-import com.kiminouso.kimivanish.listeners.VanishStatusUpdateEvent;
+import com.kiminouso.kimivanish.events.VanishStatusUpdateEvent;
 import me.tippie.tippieutils.commands.TippieCommand;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
