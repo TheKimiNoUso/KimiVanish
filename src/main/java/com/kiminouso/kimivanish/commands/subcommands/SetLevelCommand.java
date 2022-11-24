@@ -2,10 +2,8 @@ package com.kiminouso.kimivanish.commands.subcommands;
 
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
-import com.kiminouso.kimivanish.VanishManager;
-import com.kiminouso.kimivanish.commands.HideManager;
+import com.kiminouso.kimivanish.HideManager;
 import me.tippie.tippieutils.commands.TippieCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,7 +31,6 @@ public class SetLevelCommand extends TippieCommand {
         if (!(sender instanceof Player player))
             return;
 
-        VanishManager vanishManager = KimiVanish.getPlugin(KimiVanish.class).getVanishManager();
         HideManager hideManager = KimiVanish.getPlugin(KimiVanish.class).getHideManager();
 
         int level = hideManager.checkLevelFromPermission(player);
@@ -58,12 +55,13 @@ public class SetLevelCommand extends TippieCommand {
             return;
         }
 
-        vanishManager.removePlayer(player);
+        hideManager.setVanishLevel(player, futureLevel);
+//        hideManager.removePlayer(player);
         player.sendMessage(ConfigUtils.getMessage("messages.vanish.set-level.allow", player, String.valueOf(futureLevel)));
-        hideManager.RemoveVanishStatus(player);
-
-        vanishManager.addPlayer(player, futureLevel);
-        hideManager.VanishPlayer(player);
+//        hideManager.showPlayer(player);
+//
+//        hideManager.addPlayer(player, futureLevel);
+//        hideManager.vanishPlayer(player);
     }
 
     @Override

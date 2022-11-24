@@ -2,6 +2,7 @@ package com.kiminouso.kimivanish.commands.subcommands.settings;
 
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
+import com.kiminouso.kimivanish.KimiVanishPlayer;
 import com.kiminouso.kimivanish.Storage;
 import me.tippie.tippieutils.commands.TippieCommand;
 import org.bukkit.command.Command;
@@ -29,22 +30,17 @@ public class InteractSettingCommand extends TippieCommand implements Listener {
         if (!(sender instanceof Player player))
             return;
 
-        Storage storage = KimiVanish.getPlugin(KimiVanish.class).getStorage();
+        KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
+        KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
-        storage.findVanishUser(player.getUniqueId()).thenAccept((entry) -> {
-            if (entry.isEmpty())
-                return;
+        if (settings.isInteract()) {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.interact.off", player));
+        } else {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.interact.on", player));
+        }
 
-            if (entry.get(0).interactSetting()) {
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.interact.off", player));
-                storage.setInteractSetting(player.getUniqueId(), false);
-                KimiVanish.getPlugin(KimiVanish.class).getVanishManager().interactPlayers.remove(player.getUniqueId());
-            } else {
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.interact.on", player));
-                storage.setInteractSetting(player.getUniqueId(), true);
-                KimiVanish.getPlugin(KimiVanish.class).getVanishManager().interactPlayers.add(player.getUniqueId());
-            }
-        });
+        settings.setInteract(!settings.isInteract());
+        vanishPlayer.saveSettings();
     }
 
     @EventHandler
@@ -52,7 +48,7 @@ public class InteractSettingCommand extends TippieCommand implements Listener {
         if (canInteract(event.getPlayer()))
             return;
 
-        if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().isVanished(event.getPlayer())) {
+        if (KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(event.getPlayer())) {
             if (event.getAction().equals(Action.PHYSICAL) && event.getClickedBlock() != null) {
                 event.setCancelled(true);
             }
@@ -60,11 +56,6 @@ public class InteractSettingCommand extends TippieCommand implements Listener {
     }
 
     private boolean canInteract(Player player) {
-        return KimiVanish.getPlugin(KimiVanish.class).getVanishManager().interactPlayers.contains(player.getUniqueId());
-    }
-
-    @EventHandler
-    private void onPlayerLeave(PlayerQuitEvent event) {
-        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().interactPlayers.remove(event.getPlayer().getUniqueId());
+        return KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId()).getSettings().isInteract();
     }
 }

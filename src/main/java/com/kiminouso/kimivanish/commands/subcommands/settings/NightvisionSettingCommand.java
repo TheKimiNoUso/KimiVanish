@@ -2,8 +2,10 @@ package com.kiminouso.kimivanish.commands.subcommands.settings;
 
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
+import com.kiminouso.kimivanish.KimiVanishPlayer;
 import com.kiminouso.kimivanish.Storage;
 import me.tippie.tippieutils.commands.TippieCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,34 +31,30 @@ public class NightvisionSettingCommand extends TippieCommand implements Listener
         if (!(sender instanceof Player player))
             return;
 
-        Storage storage = KimiVanish.getPlugin(KimiVanish.class).getStorage();
+        KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
+        KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
-        storage.findVanishUser(player.getUniqueId()).thenAccept((entry) -> {
-            if (entry.isEmpty())
-                return;
+        if (settings.isNightvision()) {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.nightvision.off", player));
+            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
 
-            if (entry.get(0).nightVisionSetting()) {
-                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                storage.setNightvisionSetting(player.getUniqueId(), false);
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.nightvision.off", player));
-            } else {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true,false,false));
-                storage.setNightvisionSetting(player.getUniqueId(), true);
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.nightvision.on", player));
-            }
-        });
+        } else {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.nightvision.on", player));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true,false,false));
+        }
+
+        settings.setNightvision(!settings.isNightvision());
+        vanishPlayer.saveSettings();
     }
 
     @EventHandler
     private void onPlayerJoin(PlayerJoinEvent event) {
-        KimiVanish.getPlugin(KimiVanish.class).getStorage().findVanishUser(event.getPlayer().getUniqueId()).thenAccept((entry) -> {
-            if (entry.isEmpty())
-                return;
-
-            if (entry.get(0).nightVisionSetting()) {
+        Bukkit.getScheduler().runTaskLater(KimiVanish.getPlugin(KimiVanish.class), () -> {
+            KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(event.getPlayer().getUniqueId());
+            if (vanishPlayer != null && vanishPlayer.getSettings().isNightvision()) {
                 event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true,false,false));
             }
-        });
+        },30L);
     }
 
     @EventHandler

@@ -2,10 +2,11 @@ package com.kiminouso.kimivanish.commands.subcommands.settings;
 
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
+import com.kiminouso.kimivanish.KimiVanishPlayer;
 import com.kiminouso.kimivanish.Storage;
-import com.kiminouso.kimivanish.listeners.HidePlayerEvent;
-import com.kiminouso.kimivanish.listeners.UnhidePlayerEvent;
-import com.kiminouso.kimivanish.listeners.VanishStatusUpdateEvent;
+import com.kiminouso.kimivanish.events.HidePlayerEvent;
+import com.kiminouso.kimivanish.events.UnhidePlayerEvent;
+import com.kiminouso.kimivanish.events.VanishStatusUpdateEvent;
 import me.tippie.tippieutils.commands.TippieCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -13,7 +14,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,50 +31,30 @@ public class NotifySettingCommand extends TippieCommand implements Listener {
         if (!(sender instanceof Player player))
             return;
 
-        Storage storage = KimiVanish.getPlugin(KimiVanish.class).getStorage();
+        KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
+        KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
-        storage.findVanishUser(player.getUniqueId()).thenAccept((entry) -> {
-            if (entry.isEmpty())
-                return;
+        if (settings.isNotify()) {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.notify.off", player));
+        } else {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.notify.on", player));
+        }
 
-            if (entry.get(0).notifySetting()) {
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.notify.off", player));
-                storage.setNotifySetting(player.getUniqueId(), false);
-                KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.remove(player.getUniqueId());
-            } else {
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.notify.on", player));
-                storage.setNotifySetting(player.getUniqueId(), true);
-                KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.add(player.getUniqueId());
-            }
-        });
+        settings.setNotify(!settings.isNotify());
+        vanishPlayer.saveSettings();
     }
 
     @EventHandler
-    private void onHide(HidePlayerEvent event) {
-        sendMessage("messages.vanish.notify.player-vanished", event.getPlayer(), String.valueOf(KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromMap(event.getPlayer())));
-    }
-
-    @EventHandler
-    private void onUnhide(UnhidePlayerEvent event) {
-        sendMessage("messages.vanish.notify.player-unvanished", event.getPlayer(), "");
+    private void onVanishStatusChange(VanishStatusUpdateEvent event) {
+        if (event.isVanished())
+            sendMessage("messages.vanish.notify.player-vanished", event.getPlayer(), String.valueOf(KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromMap(event.getPlayer())));
+        else
+            sendMessage("messages.vanish.notify.player-unvanished", event.getPlayer(), "");
     }
 
     private void sendMessage(String path, Player vanishedPlayer, String level) {
-        if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.isEmpty())
-            return;
-
-        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.forEach(uuid -> {
-            Player player = Bukkit.getPlayer(uuid);
-
-            if (player == null)
-                return;
-
-            player.sendMessage(ConfigUtils.getMessage(path, vanishedPlayer, vanishedPlayer.getName(), level));
-        });
-    }
-
-    @EventHandler
-    private void onPlayerLeave(PlayerQuitEvent event) {
-        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().notifyPlayers.remove(event.getPlayer().getUniqueId());
+        KimiVanishPlayer.getOnlineVanishPlayers().stream()
+                .filter(p -> p.getSettings().isNotify())
+                .forEach(p -> p.getPlayer().sendMessage(ConfigUtils.getMessage(path, vanishedPlayer, vanishedPlayer.getName(), level)));
     }
 }
