@@ -5,6 +5,7 @@ import com.earth2me.essentials.User;
 import com.kiminouso.kimivanish.events.HidePlayerEvent;
 import com.kiminouso.kimivanish.events.UnhidePlayerEvent;
 import com.kiminouso.kimivanish.events.VanishStatusUpdateEvent;
+import lombok.Getter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -23,7 +24,9 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 
 public class HideManager implements Listener {
-    public final Set<UUID> currentlyVanished = new HashSet<>();
+    @Getter
+    private final Set<UUID> currentlyVanished = new HashSet<>();
+    @Getter
     private final TreeMap<Integer, List<Player>> vanishLevels = new TreeMap<>();
 
     public void addPlayer(Player player){
@@ -55,6 +58,7 @@ public class HideManager implements Listener {
     public void vanishPlayer(Player player) {
         KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
         if (vanishPlayer == null) throw new IllegalArgumentException("Given player is not a loaded KimiVanishPlayer");
+        vanishPlayer.setVanished(true);
 
         List<Player> canSee = canSeeInVansish(player);
 
@@ -68,6 +72,8 @@ public class HideManager implements Listener {
 
         VanishStatusUpdateEvent updateEvent = new VanishStatusUpdateEvent(player, checkLevelFromMap(player), true, player.getLocation());
         Bukkit.getPluginManager().callEvent(updateEvent);
+
+
 
         HidePlayerEvent hideEvent = new HidePlayerEvent(player, checkLevelFromMap(player), player.getLocation());
         Bukkit.getPluginManager().callEvent(hideEvent);
@@ -95,12 +101,17 @@ public class HideManager implements Listener {
     }
 
     public void showPlayer(Player player) {
+        KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
+        if (vanishPlayer == null) throw new IllegalArgumentException("Given player is not a loaded KimiVanishPlayer");
+        vanishPlayer.setVanished(false);
+
         Bukkit.getOnlinePlayers().stream().filter(viewer -> viewer != player).forEach(viewer -> viewer.showPlayer(KimiVanish.getPlugin(KimiVanish.class), player));
         showHideBossbar(player, false);
 
         currentlyVanished.remove(player.getUniqueId());
         VanishStatusUpdateEvent updateEvent = new VanishStatusUpdateEvent(player, checkLevelFromMap(player), false, player.getLocation());
         Bukkit.getPluginManager().callEvent(updateEvent);
+
 
         UnhidePlayerEvent unhideEvent = new UnhidePlayerEvent(player, player.getLocation());
         Bukkit.getPluginManager().callEvent(unhideEvent);

@@ -2,6 +2,7 @@ package com.kiminouso.kimivanish.commands.subcommands.settings;
 
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
+import com.kiminouso.kimivanish.KimiVanishPlayer;
 import com.kiminouso.kimivanish.Storage;
 import me.tippie.tippieutils.commands.TippieCommand;
 import org.bukkit.command.Command;
@@ -27,30 +28,25 @@ public class ItemSettingCommand extends TippieCommand implements Listener {
         if (!(sender instanceof Player player))
             return;
 
-        Storage storage = KimiVanish.getPlugin(KimiVanish.class).getStorage();
+        KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
+        KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
-        storage.findVanishUser(player.getUniqueId()).thenAccept((entry) -> {
-           if (entry.isEmpty())
-               return;
+        if (settings.isItem()) {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.item.off", player));
+        } else {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.item.on", player));
+        }
 
-           if (entry.get(0).itemSetting()) {
-               player.sendMessage(ConfigUtils.getMessage("messages.vanish.item.off", player));
-               storage.setItemSetting(player.getUniqueId(), false);
-               KimiVanish.getPlugin(KimiVanish.class).getVanishManager().itemPlayers.remove(player.getUniqueId());
-           } else {
-               player.sendMessage(ConfigUtils.getMessage("messages.vanish.item.on", player));
-               storage.setItemSetting(player.getUniqueId(), true);
-               KimiVanish.getPlugin(KimiVanish.class).getVanishManager().itemPlayers.add(player.getUniqueId());
-           }
-        });
+        settings.setItem(!settings.isItem());
+        vanishPlayer.saveSettings();
     }
 
     @EventHandler
     private void onItemDrop(PlayerDropItemEvent event) {
-        if (canDropItem(event.getPlayer()))
-            return;
 
-        if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().isVanished(event.getPlayer()))
+        Player player = event.getPlayer();
+        KimiVanishPlayer.Settings settings = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId()).getSettings();
+        if (KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(player) && settings.isItem())
             event.setCancelled(true);
     }
 
@@ -59,19 +55,10 @@ public class ItemSettingCommand extends TippieCommand implements Listener {
         if (!(event.getEntity() instanceof Player player))
             return;
 
-        if (canDropItem(player))
-            return;
-
-        if (KimiVanish.getPlugin(KimiVanish.class).getVanishManager().isVanished(player))
+        KimiVanishPlayer.Settings settings = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId()).getSettings();
+        if (KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(player) && settings.isItem())
             event.setCancelled(true);
     }
 
-    private boolean canDropItem(Player player) {
-        return KimiVanish.getPlugin(KimiVanish.class).getVanishManager().itemPlayers.contains(player.getUniqueId());
-    }
 
-    @EventHandler
-    private void onPlayerLeave(PlayerQuitEvent event) {
-        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().itemPlayers.remove(event.getPlayer().getUniqueId());
-    }
 }

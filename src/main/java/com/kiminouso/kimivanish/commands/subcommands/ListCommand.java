@@ -1,6 +1,7 @@
 package com.kiminouso.kimivanish.commands.subcommands;
 
 import com.kiminouso.kimivanish.ConfigUtils;
+import com.kiminouso.kimivanish.HideManager;
 import com.kiminouso.kimivanish.KimiVanish;
 import me.tippie.tippieutils.commands.TippieCommand;
 import me.tippie.tippieutils.guis.GuiBuilder;
@@ -32,7 +33,9 @@ public class ListCommand extends TippieCommand {
         if (!(sender instanceof Player player))
             return;
 
-        var vanished = KimiVanish.getPlugin(KimiVanish.class).getVanishManager().currentlyVanished;
+        HideManager hideManager = KimiVanish.getPlugin(KimiVanish.class).getHideManager();
+
+        var vanished = hideManager.getCurrentlyVanished();
 
         if (vanished.isEmpty()) {
             player.sendMessage(ConfigUtils.getMessage("messages.vanish.list.empty", false));
@@ -42,10 +45,13 @@ public class ListCommand extends TippieCommand {
         if (KimiVanish.getPlugin(KimiVanish.class).getConfig().getBoolean("settings.vanish.use-gui-list")) {
             Bukkit.getScheduler().runTaskLater(KimiVanish.getPlugin(KimiVanish.class), () -> openVanishGui(player, vanished), 10L);
         } else {
-            KimiVanish.getPlugin(KimiVanish.class).getVanishManager().vanishLevels.forEach((key, value) -> {
+            hideManager.getVanishLevels().forEach((key, value) -> {
                 if (value.isEmpty())
                     return;
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.list.chat", player, String.valueOf(key), value.stream().map(Player::getName).collect(Collectors.joining(", "))));
+                player.sendMessage(ConfigUtils.getMessage("messages.vanish.list.chat", player, String.valueOf(key), value.stream()
+                        .filter(hideManager::isVanished)
+                        .map(Player::getName)
+                        .collect(Collectors.joining(", "))));
             });
         }
     }
@@ -65,7 +71,7 @@ public class ListCommand extends TippieCommand {
 
                 skull.setOwningPlayer(p);
                 skull.setDisplayName("§9" + p.getName());
-                skull.setLore(List.of("§7Actual Level: " + KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(p),"§7Effective Level: " + KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromMap(p)));
+                skull.setLore(List.of("§7Actual Level: " + KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(p), "§7Effective Level: " + KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromMap(p)));
                 item.setItemMeta(skull);
 
                 builder.setSlot(count, item, (InventoryClickEvent, OpenGUI) -> {

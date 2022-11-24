@@ -2,6 +2,7 @@ package com.kiminouso.kimivanish.commands.subcommands.settings;
 
 import com.kiminouso.kimivanish.ConfigUtils;
 import com.kiminouso.kimivanish.KimiVanish;
+import com.kiminouso.kimivanish.KimiVanishPlayer;
 import com.kiminouso.kimivanish.Storage;
 import com.kiminouso.kimivanish.events.VanishStatusUpdateEvent;
 import me.tippie.tippieutils.commands.TippieCommand;
@@ -34,28 +35,23 @@ public class LocationSettingCommand extends TippieCommand implements Listener {
         if (!(sender instanceof Player player))
             return;
 
-        Storage storage = KimiVanish.getPlugin(KimiVanish.class).getStorage();
+        KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
+        KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
-        storage.findVanishUser(player.getUniqueId()).thenAccept((entry) -> {
-            if (entry.isEmpty())
-                return;
+        if (settings.isLocation()) {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.location.off", player));
+        } else {
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.location.on", player));
+        }
 
-            if (entry.get(0).locationSetting()) {
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.location.off", player));
-                storage.setLocationSetting(player.getUniqueId(), false);
-                KimiVanish.getPlugin(KimiVanish.class).getVanishManager().locationPlayers.remove(player.getUniqueId());
-            } else {
-                player.sendMessage(ConfigUtils.getMessage("messages.vanish.location.on", player));
-                storage.setLocationSetting(player.getUniqueId(), true);
-                KimiVanish.getPlugin(KimiVanish.class).getVanishManager().locationPlayers.add(player.getUniqueId());
-            }
-        });
+        settings.setLocation(!settings.isLocation());
+        vanishPlayer.saveSettings();
 
     }
 
     @EventHandler
     private void onVanish(VanishStatusUpdateEvent event) {
-        if (!KimiVanish.getPlugin(KimiVanish.class).getVanishManager().locationPlayers.contains(event.getPlayer().getUniqueId()))
+        if (!KimiVanishPlayer.getOnlineVanishPlayer(event.getPlayer().getUniqueId()).getSettings().isLocation())
             return;
 
         Player player = event.getPlayer();
@@ -71,11 +67,5 @@ public class LocationSettingCommand extends TippieCommand implements Listener {
             player.teleport(loc);
             event.getPlayer().sendMessage(ConfigUtils.getMessage("messages.vanish.location.teleported", player));
         }
-    }
-
-    @EventHandler
-    private void onPlayerLeave(PlayerQuitEvent event) {
-        savedLocations.remove(event.getPlayer().getUniqueId());
-        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().locationPlayers.remove(event.getPlayer().getUniqueId());
     }
 }
