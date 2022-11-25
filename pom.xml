@@ -66,9 +66,8 @@
          
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub TheKimiNoUso Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/TheKimiNoUso/KimiVanish</url>
+            <id>tippie-repo</id>
+            <url>https://repo.tippie.me/repository/maven-kiminouso/</url>
         </repository>
     </distributionManagement>
 
