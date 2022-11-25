@@ -49,6 +49,9 @@ public class FlySettingCommand extends TippieCommand implements Listener {
     private void onHide(VanishStatusUpdateEvent event) {
         KimiVanishPlayer player = KimiVanishPlayer.getOnlineVanishPlayer(event.getPlayer().getUniqueId());
 
+        if (player == null)
+            return;
+
         if (player.getSettings().isFly()) {
             event.getPlayer().setFlying(event.isVanished());
         }

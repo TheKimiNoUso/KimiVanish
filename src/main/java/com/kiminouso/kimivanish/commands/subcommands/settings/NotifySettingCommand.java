@@ -57,7 +57,7 @@ public class NotifySettingCommand extends TippieCommand implements Listener {
 
     private void sendMessage(String path, Player vanishedPlayer, String level) {
         KimiVanishPlayer.getOnlineVanishPlayers().stream()
-                .filter(p -> p.getSettings().isNotify())
+                .filter(p -> p.getSettings().isNotify() && p.getPlayer().hasPermission("kimivanish.hide"))
                 .forEach(p -> p.getPlayer().sendMessage(ConfigUtils.getMessage(path, vanishedPlayer, vanishedPlayer.getName(), level)));
     }
 }
