@@ -4,7 +4,6 @@ import com.kiminouso.kimivanish.commands.VanishCommand;
 import com.kiminouso.kimivanish.commands.subcommands.settings.*;
 import lombok.Getter;
 import me.tippie.tippieutils.guis.GuiManager;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

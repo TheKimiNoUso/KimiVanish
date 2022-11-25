@@ -1,4 +1,4 @@
-package org.bstats.bukkit;
+package com.kiminouso.kimivanish;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
