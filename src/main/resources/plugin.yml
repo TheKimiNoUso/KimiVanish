@@ -1,7 +1,7 @@
 name: KimiVanish
 version: '${project.version}'
 main: com.kiminouso.kimivanish.KimiVanish
-api-version: 1.19
+api-version: 1.17
 prefix: KimiVanish
 authors: [ KimiNoUso, Tippie_ ]
 softdepend: [ PlaceholderAPI, Essentials ]
