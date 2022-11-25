@@ -4,6 +4,7 @@ import com.kiminouso.kimivanish.commands.VanishCommand;
 import com.kiminouso.kimivanish.commands.subcommands.settings.*;
 import lombok.Getter;
 import me.tippie.tippieutils.guis.GuiManager;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +21,8 @@ public final class KimiVanish extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+
+        Metrics metrics = new Metrics(this, 16937);
 
         VanishCommand vanishCommand = new VanishCommand();
         hideManager = new HideManager();
