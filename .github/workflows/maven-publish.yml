@@ -23,17 +23,11 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
         cache: maven
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        
     - uses: s4u/maven-settings-action@v2.3.0
       with:
           servers: |
@@ -42,3 +36,8 @@ jobs:
                 "username": "${{ secrets.TIPPIE_REPO_USERNAME }}",
                 "password": "${{ secrets.TIPPIE_REPO_PASSWORD }}"
             }]
+
+    - name: Publish to Tippie Repo
+      run: mvn deploy
+        
+
