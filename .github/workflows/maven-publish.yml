@@ -33,3 +33,12 @@ jobs:
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        
+    - uses: s4u/maven-settings-action@v2.3.0
+      with:
+          servers: |
+            [{
+                "id": "tippie-repo",
+                "username": "${{ secrets.TIPPIE_REPO_USERNAME }}",
+                "password": "${{ secrets.TIPPIE_REPO_PASSWORD }}"
+            }]
