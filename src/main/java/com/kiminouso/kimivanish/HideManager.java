@@ -73,8 +73,6 @@ public class HideManager implements Listener {
         VanishStatusUpdateEvent updateEvent = new VanishStatusUpdateEvent(player, checkLevelFromMap(player), true, player.getLocation());
         Bukkit.getPluginManager().callEvent(updateEvent);
 
-
-
         HidePlayerEvent hideEvent = new HidePlayerEvent(player, checkLevelFromMap(player), player.getLocation());
         Bukkit.getPluginManager().callEvent(hideEvent);
 
@@ -161,6 +159,22 @@ public class HideManager implements Listener {
 //        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().removePlayer(event.getPlayer());
 //        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().canVanish.remove(event.getPlayer().getUniqueId());
 //    }
+
+    public void fixLevel(Player player) {
+        int level = checkLevelFromMap(player);
+
+        // Hide player for values below
+        vanishLevels.headMap(level, false).values().stream().flatMap(Collection::stream).forEach(p -> {
+            p.hidePlayer(KimiVanish.getPlugin(KimiVanish.class), player);
+            player.showPlayer(KimiVanish.getPlugin(KimiVanish.class), p);
+        });
+
+        // Show player for values above
+        vanishLevels.tailMap(level, true).values().stream().flatMap(Collection::stream).forEach(p -> p.showPlayer(KimiVanish.getPlugin(KimiVanish.class), player));
+
+        // Show current level to player
+        vanishLevels.get(level).forEach(p -> player.showPlayer(KimiVanish.getPlugin(KimiVanish.class), p));
+    }
 
     @EventHandler
     private void onVanish(VanishStatusUpdateEvent event) {
@@ -270,14 +284,13 @@ public class HideManager implements Listener {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ConfigUtils.getMessage("messages.vanish.bossbar", false)));
     });
 
-    @Deprecated // This task is probably unncessary and can be moved to be ran when someone who can vanish joins the server or when someone vanishes.
-    private final Runnable vanishTask = () -> KimiVanishPlayer.getOnlineVanishPlayers().forEach(vanishPlayer -> {
-        Player player = vanishPlayer.getPlayer();
-
-        int level = KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(player);
-        vanishLevels.tailMap(level, true)
-                .values().forEach(sublist -> sublist.forEach(p -> player.showPlayer(KimiVanish.getPlugin(KimiVanish.class), p)));
-    });
+//    @Deprecated // This task is probably unncessary and can be moved to be ran when someone who can vanish joins the server or when someone vanishes.
+//    private final Runnable vanishTask = () -> KimiVanishPlayer.getOnlineVanishPlayers().forEach(vanishPlayer -> {
+//        Player player = vanishPlayer.getPlayer();
+//
+//        vanishLevels.tailMap(checkLevelFromMap(player), true)
+//                .values().forEach(sublist -> sublist.forEach(p -> player.showPlayer(KimiVanish.getPlugin(KimiVanish.class), p)));
+//    });
 
     private BukkitTask activeActionBarTask = null;
 
@@ -302,17 +315,17 @@ public class HideManager implements Listener {
     private BukkitTask activeVanishTask = null;
 
     public void startVanishTask() {
-        if (activeVanishTask != null)
-            activeVanishTask.cancel();
-
-        activeVanishTask = Bukkit.getScheduler().runTaskTimer(KimiVanish.getPlugin(KimiVanish.class), vanishTask, 0, 1L);
+//        if (activeVanishTask != null)
+//            activeVanishTask.cancel();
+//
+//        activeVanishTask = Bukkit.getScheduler().runTaskTimer(KimiVanish.getPlugin(KimiVanish.class), vanishTask, 0, 1L);
     }
 
     public void endVanishTask() {
-        if (activeVanishTask != null) {
-            activeVanishTask.cancel();
-            activeVanishTask = null;
-        }
+//        if (activeVanishTask != null) {
+//            activeVanishTask.cancel();
+//            activeVanishTask = null;
+//        }
     }
 
     public boolean vanishTaskIsActive() {
@@ -334,7 +347,7 @@ public class HideManager implements Listener {
         });
 
         if (isVanished(player)){
-
+            fixLevel(player);
         }
     }
 }
