@@ -3,7 +3,7 @@ version: '${project.version}'
 main: com.kiminouso.kimivanish.KimiVanish
 api-version: 1.19
 prefix: KimiVanish
-authors: [ KimiNoUso ]
+authors: [ KimiNoUso, Tippie_ ]
 softdepend: [ PlaceholderAPI, Essentials ]
 description: A levelled vanish plugin.
 website: https://kiminouso.com/
