@@ -43,9 +43,12 @@ public class ItemSettingCommand extends TippieCommand implements Listener {
 
     @EventHandler
     private void onItemDrop(PlayerDropItemEvent event) {
-
         Player player = event.getPlayer();
-        KimiVanishPlayer.Settings settings = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId()).getSettings();
+        KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
+        if (vanishPlayer == null)
+            return;
+
+        KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
         if (KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(player) && settings.isItem())
             event.setCancelled(true);
     }
