@@ -46,10 +46,19 @@ public class VanishListeners implements Listener {
                     Bukkit.getScheduler().runTask(KimiVanish.getPlugin(KimiVanish.class), () -> {
                         event.getPlayer().setInvisible(false);
                         KimiVanish.getPlugin(KimiVanish.class).getHideManager().vanishPlayer(event.getPlayer());
+                        KimiVanish.getPlugin(KimiVanish.class).getHideManager().fixLevel(event.getPlayer());
                     });
                 }
             });
         }
+
+        KimiVanish.getPlugin(KimiVanish.class).getHideManager().getCurrentlyVanished().forEach((uuid) -> {
+            Player vanished = Bukkit.getPlayer(uuid);
+            if (vanished == null)
+                return;
+
+            event.getPlayer().hidePlayer(KimiVanish.getPlugin(KimiVanish.class), vanished);
+        });
     }
 
     @EventHandler
