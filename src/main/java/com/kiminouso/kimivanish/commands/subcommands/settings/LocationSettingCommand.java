@@ -51,6 +51,9 @@ public class LocationSettingCommand extends TippieCommand implements Listener {
 
     @EventHandler
     private void onVanish(VanishStatusUpdateEvent event) {
+        if (KimiVanishPlayer.getOnlineVanishPlayer(event.getPlayer().getUniqueId()) == null)
+            return;
+
         if (!KimiVanishPlayer.getOnlineVanishPlayer(event.getPlayer().getUniqueId()).getSettings().isLocation())
             return;
 

@@ -45,10 +45,10 @@ public class InteractSettingCommand extends TippieCommand implements Listener {
 
     @EventHandler
     private void onPhysicalInteraction(PlayerInteractEvent event) {
-        if (canInteract(event.getPlayer()))
-            return;
-
         if (KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(event.getPlayer())) {
+            if (canInteract(event.getPlayer()))
+                return;
+
             if (event.getAction().equals(Action.PHYSICAL) && event.getClickedBlock() != null) {
                 event.setCancelled(true);
             }

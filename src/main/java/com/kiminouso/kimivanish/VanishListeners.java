@@ -84,7 +84,7 @@ public class VanishListeners implements Listener {
             return;
 
         if (event.getPlayer().hasPermission("kimivanish.hide"))
-            event.setJoinMessage("");
+            event.setJoinMessage(null);
     }
 
     @EventHandler
@@ -95,7 +95,7 @@ public class VanishListeners implements Listener {
             return;
 
         if (event.getPlayer().hasPermission("kimivanish.hide"))
-            event.setQuitMessage("");
+            event.setQuitMessage(null);
     }
 
     @EventHandler
@@ -104,7 +104,7 @@ public class VanishListeners implements Listener {
             return;
 
         if (event.getPlayer().hasPermission("kimivanish.hide"))
-            event.setLeaveMessage("");
+            event.setLeaveMessage(null);
     }
 
     @EventHandler

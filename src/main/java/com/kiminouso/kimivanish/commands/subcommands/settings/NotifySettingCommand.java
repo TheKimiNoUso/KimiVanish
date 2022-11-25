@@ -32,6 +32,9 @@ public class NotifySettingCommand extends TippieCommand implements Listener {
             return;
 
         KimiVanishPlayer vanishPlayer = KimiVanishPlayer.getOnlineVanishPlayer(player.getUniqueId());
+        if (vanishPlayer == null)
+            return;
+
         KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
         if (settings.isNotify()) {
