@@ -43,4 +43,8 @@ public class ConfigUtils {
             return Stream.of(ColorUtils.translateColorCodes('&', fromConfig)).map(component -> component.toLegacyText()).collect(Collectors.joining());
         }
     }
+
+    public static String getPrefix() {
+        return KimiVanish.getPlugin(KimiVanish.class).getConfig().getString("prefix");
+    }
 }

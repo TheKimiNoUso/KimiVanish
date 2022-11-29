@@ -32,9 +32,9 @@ public class ItemSettingCommand extends TippieCommand implements Listener {
         KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
         if (settings.isItem()) {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.item.off", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.item.toggle-off", player));
         } else {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.item.on", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.item.toggle-on", player));
         }
 
         settings.setItem(!settings.isItem());

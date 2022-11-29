@@ -56,12 +56,7 @@ public class SetLevelCommand extends TippieCommand {
         }
 
         hideManager.setVanishLevel(player, futureLevel);
-//        hideManager.removePlayer(player);
         player.sendMessage(ConfigUtils.getMessage("messages.vanish.set-level.allow", player, String.valueOf(futureLevel)));
-//        hideManager.showPlayer(player);
-//
-//        hideManager.addPlayer(player, futureLevel);
-//        hideManager.vanishPlayer(player);
     }
 
     @Override

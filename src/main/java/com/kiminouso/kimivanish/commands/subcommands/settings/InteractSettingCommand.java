@@ -34,9 +34,9 @@ public class InteractSettingCommand extends TippieCommand implements Listener {
         KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
         if (settings.isInteract()) {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.interact.off", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.interact.toggle-off", player));
         } else {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.interact.on", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.interact.toggle-on", player));
         }
 
         settings.setInteract(!settings.isInteract());

@@ -13,6 +13,29 @@ settings:
 
 messages:
   vanish:
+    item:
+      toggle-on: "&7You have toggled item pickup & drop &l&aON"
+      toggle-off: "&7You have toggled item pickup & drop &l&cOFF"
+    interact:
+      toggle-on: "&7You have toggled physical interactions &l&aON"
+      toggle-off: "&7You have toggled physical interactions &l&cOFF"
+    notify:
+      player-unvanished: "&7Player {0} has unvanished."
+      player-vanished: "&7Player {0} has vanished at level {1}"
+      toggle-on: "&7You have toggled notifications &l&aON"
+      toggle-off: "&7You have toggled notifications &l&cOFF"
+    location:
+      saved: "&7Saved your vanish entry location as &9{0}x {1}y {2}z&7."
+      teleported: "&7Your vanish entry location was saved, so you have been teleported."
+      toggle-on: "&7You have toggled location saving &l&aON"
+      toggle-off: "&7You have toggled location saving &l&cOFF"
+    nightvision:
+      toggle-on: "&7You have toggled nightvision &l&aON"
+      toggle-off: "&7You have toggled nightvision &l&cOFF"
+    flight:
+      toggle-on: "&7You have toggled nightvision &l&aON"
+      toggle-off: "&7You have toggled nightvision &l&cOFF"
+      warning: "&cYou are currently flying out of vanish."
     set-level:
       deny:
         lowest-level: "&cYou are currently at the lowest level."
@@ -32,27 +55,4 @@ messages:
     hideother-other: "&7You were hidden at level &a{0} &7by &a{1}"
     hide: "&aYou have been hidden at level &2{0}"
     unhide: "&cYou are now visible to all players"
-    item:
-      on: "&7You have toggled item pickup & drop &aON"
-      off: "&7You have toggled item pickup & drop &cOFF"
-    interact:
-      on: "&7You have toggled physical interactions &aON"
-      off: "&7You have toggled physical interactions &cOFF"
-    notify:
-      player-unvanished: "&7Player {0} has unvanished."
-      player-vanished: "&7Player {0} has vanished at level {1}"
-      on: "&7You have toggled notifications &aON"
-      off: "&7You have toggled notifications &cOFF"
-    location:
-      saved: "&7Saved your vanish entry location as &9{0}x {1}y {2}z&7."
-      teleported: "&7Your vanish entry location was saved, so you have been teleported."
-      on: "&7You have toggled location saving &aON"
-      off: "&7You have toggled location saving &cOFF"
-    nightvision:
-      on: "&7You have toggled nightvision &aON"
-      off: "&7You have toggled nightvision &cOFF"
-    flight:
-      on: "&7You have toggled nightvision &aON"
-      off: "&7You have toggled nightvision &cOFF"
-      warning: "&cYou are currently flying out of vanish."
     confirm-message: "&7You sent the message: &9{0}&7. Did you mean to do this? If so, &9resend the same message&7."

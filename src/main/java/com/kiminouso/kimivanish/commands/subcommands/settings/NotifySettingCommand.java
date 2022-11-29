@@ -38,9 +38,9 @@ public class NotifySettingCommand extends TippieCommand implements Listener {
         KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
         if (settings.isNotify()) {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.notify.off", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.notify.toggle-off", player));
         } else {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.notify.on", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.notify.toggle-on", player));
         }
 
         settings.setNotify(!settings.isNotify());

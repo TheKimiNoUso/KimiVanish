@@ -35,11 +35,11 @@ public class NightvisionSettingCommand extends TippieCommand implements Listener
         KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
         if (settings.isNightvision()) {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.nightvision.off", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.nightvision.toggle-off", player));
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
 
         } else {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.nightvision.on", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.nightvision.toggle-on", player));
             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true,false,false));
         }
 

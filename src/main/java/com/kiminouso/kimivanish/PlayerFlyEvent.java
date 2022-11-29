@@ -1,5 +1,6 @@
 package com.kiminouso.kimivanish;
 
+import com.earth2me.essentials.Essentials;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,13 +18,13 @@ public class PlayerFlyEvent implements Listener {
         if (!KimiVanish.getPlugin(KimiVanish.class).getConfig().getBoolean("settings.vanish.warn-unhidden-flyers"))
             return;
 
-        if (!KimiVanish.getPlugin(KimiVanish.class).getHideManager().isVanished(event.getPlayer()))
+        if (Essentials.getPlugin(Essentials.class).getUser(event.getPlayer().getUniqueId()).isHidden())
             return;
 
         if (!event.getPlayer().isFlying())
             return;
 
-        if (!warnedPlayers.contains(event.getPlayer().getUniqueId()))
+        if (warnedPlayers.contains(event.getPlayer().getUniqueId()))
             return;
 
         warnedPlayers.add(event.getPlayer().getUniqueId());

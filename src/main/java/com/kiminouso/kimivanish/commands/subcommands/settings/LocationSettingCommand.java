@@ -39,9 +39,9 @@ public class LocationSettingCommand extends TippieCommand implements Listener {
         KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
         if (settings.isLocation()) {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.location.off", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.location.toggle-off", player));
         } else {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.location.on", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.location.toggle-on", player));
         }
 
         settings.setLocation(!settings.isLocation());

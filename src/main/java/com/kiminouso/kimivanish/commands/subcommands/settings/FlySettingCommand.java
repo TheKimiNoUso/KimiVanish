@@ -35,9 +35,9 @@ public class FlySettingCommand extends TippieCommand implements Listener {
         KimiVanishPlayer.Settings settings = vanishPlayer.getSettings();
 
         if (settings.isFly()) {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.flight.off", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.flight.toggle-off", player));
         } else {
-            player.sendMessage(ConfigUtils.getMessage("messages.vanish.flight.on", player));
+            player.sendMessage(ConfigUtils.getMessage("messages.vanish.flight.toggle-on", player));
         }
 
         settings.setFly(!settings.isFly());
