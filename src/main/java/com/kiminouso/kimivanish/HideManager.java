@@ -38,13 +38,6 @@ public class HideManager implements Listener {
             value.add(player);
             return value;
         });
-
-//        vanishLevels.headMap(level, true).values().forEach(sublist -> sublist.forEach(p -> {
-//            if (!p.hasPermission("kimivanish.hide"))
-//                return;
-//
-//            player.showPlayer(KimiVanish.getPlugin(KimiVanish.class), p);
-//        }));
     }
 
     public void removePlayer(Player player){
@@ -141,26 +134,6 @@ public class HideManager implements Listener {
         else return optional.get().getKey();
     }
 
-    // Replaced with VanishListeners
-
-//    @EventHandler
-//    private void onPlayerJoin(PlayerJoinEvent event) {
-//        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().currentlyVanished.forEach(uuid -> {
-//            event.getPlayer().hidePlayer(KimiVanish.getPlugin(KimiVanish.class), Bukkit.getPlayer(uuid));
-//        });
-//
-//        if (event.getPlayer().hasPermission("kimivanish.hide")) {
-//            KimiVanish.getPlugin(KimiVanish.class).getVanishManager().addPlayer(event.getPlayer(), checkLevelFromPermission(event.getPlayer()));
-//            KimiVanish.getPlugin(KimiVanish.class).getVanishManager().canVanish.add(event.getPlayer().getUniqueId());
-//        }
-//    }
-
-//    @EventHandler
-//    private void onPlayerLeave(PlayerQuitEvent event) {
-//        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().removePlayer(event.getPlayer());
-//        KimiVanish.getPlugin(KimiVanish.class).getVanishManager().canVanish.remove(event.getPlayer().getUniqueId());
-//    }
-
     public void fixLevel(Player player) {
         int level = checkLevelFromMap(player);
 
@@ -195,10 +168,6 @@ public class HideManager implements Listener {
         });
     }
 
-    /**
-     * @deprecated Unsafe
-     */
-    @Deprecated
     public void reloadPlayers(){
         Bukkit.getOnlinePlayers()
                 .stream()
@@ -285,14 +254,6 @@ public class HideManager implements Listener {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ConfigUtils.getMessage("messages.vanish.bossbar", false)));
     });
 
-//    @Deprecated // This task is probably unncessary and can be moved to be ran when someone who can vanish joins the server or when someone vanishes.
-//    private final Runnable vanishTask = () -> KimiVanishPlayer.getOnlineVanishPlayers().forEach(vanishPlayer -> {
-//        Player player = vanishPlayer.getPlayer();
-//
-//        vanishLevels.tailMap(checkLevelFromMap(player), true)
-//                .values().forEach(sublist -> sublist.forEach(p -> player.showPlayer(KimiVanish.getPlugin(KimiVanish.class), p)));
-//    });
-
     private BukkitTask activeActionBarTask = null;
 
     public void startActionBarTask() {
@@ -316,17 +277,9 @@ public class HideManager implements Listener {
     private BukkitTask activeVanishTask = null;
 
     public void startVanishTask() {
-//        if (activeVanishTask != null)
-//            activeVanishTask.cancel();
-//
-//        activeVanishTask = Bukkit.getScheduler().runTaskTimer(KimiVanish.getPlugin(KimiVanish.class), vanishTask, 0, 1L);
     }
 
     public void endVanishTask() {
-//        if (activeVanishTask != null) {
-//            activeVanishTask.cancel();
-//            activeVanishTask = null;
-//        }
     }
 
     public boolean vanishTaskIsActive() {

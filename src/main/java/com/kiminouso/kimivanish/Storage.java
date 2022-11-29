@@ -142,12 +142,6 @@ public class Storage extends SQLStorage {
         });
     }
 
-//    ITEM_SETTING BOOLEAN NOT NULL,
-//    INTERACT_SETTING BOOLEAN NOT NULL,
-//    NOTIFY_SETTING BOOLEAN NOT NULL,
-//    LOCATION_SETTING BOOLEAN NOT NULL,
-//    NIGHTVISION_SETTING BOOLEAN NOT NULL,
-//    FLIGHT_SETTING BOOLEAN NOT NULL
     @SqlQuery("UPDATE USER_PREFERENCES SET ITEM_SETTING = ?, INTERACT_SETTING = ?, NOTIFY_SETTING = ?, LOCATION_SETTING = ?, NIGHTVISION_SETTING = ?, FLIGHT_SETTING = ? WHERE VANISH_USER = ?")
     public CompletableFuture<Void> saveSettings(UUID uuid, KimiVanishPlayer.Settings settings) {
         return prepareStatement((stmt) -> {

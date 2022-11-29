@@ -14,7 +14,7 @@ public class ReloadCommand extends TippieCommand {
         super.subLevel = 1;
         super.name = "reload";
         super.prefix = ConfigUtils.getMessage("prefix", false);
-        super.description = "Reload config and vanish users";
+        super.description = "Reload configuration and messages";
         super.permission = "kimivanish.reload";
     }
 
@@ -22,7 +22,5 @@ public class ReloadCommand extends TippieCommand {
     public void executes(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) throws NoSuchMethodException {
         KimiVanish.getPlugin(KimiVanish.class).reloadConfig();
         sender.sendMessage("Config has been reloaded");
-
-//        sender.sendMessage("Vanish players have been reloaded");
     }
 }

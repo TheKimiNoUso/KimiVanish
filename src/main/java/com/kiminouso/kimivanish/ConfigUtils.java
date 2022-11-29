@@ -15,11 +15,13 @@ public class ConfigUtils {
         String fromConfig = KimiVanish.getPlugin(KimiVanish.class).getConfig().getString(path);
         String prefix = KimiVanish.getPlugin(KimiVanish.class).getConfig().getString("prefix");
 
-        if (vars == null || fromConfig == null)
+        if (fromConfig == null)
             return prefix + " Unknown Message";
 
-        for (int i = 0; i < vars.length; i++) {
-            fromConfig = fromConfig.replace("{" + i + "}", vars[i]);
+        if (vars != null) {
+            for (int i = 0; i < vars.length; i++) {
+                fromConfig = fromConfig.replace("{" + i + "}", vars[i]);
+            }
         }
 
         String finalMessage = prefix + " " + fromConfig;

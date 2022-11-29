@@ -54,11 +54,11 @@ public class KimiVanishPlayer {
     @AllArgsConstructor
     @RequiredArgsConstructor
     public static class Settings {
-        private boolean fly = true;
+        private boolean fly = false;
         private boolean interact = false;
-        private boolean item = true;
-        private boolean location = true;
-        private boolean nightvision = true;
+        private boolean item = false;
+        private boolean location = false;
+        private boolean nightvision = false;
         private boolean notify = false;
 
         private CompletableFuture<Void> save(UUID uuid) {

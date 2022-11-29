@@ -7,6 +7,12 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * isVanished = True when the player is vanished.
+ * location = Location when the player first vanished.
+ * level = Player's level in the map (Their personal level or the default level.
+ * player = Vanished player.
+ */
 public class VanishStatusUpdateEvent extends PlayerEvent {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     @Getter private final int vanishLevel;

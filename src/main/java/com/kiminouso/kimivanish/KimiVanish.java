@@ -32,6 +32,7 @@ public final class KimiVanish extends JavaPlugin {
         InteractSettingCommand interactSettingCommand = new InteractSettingCommand();
         LocationSettingCommand locationSettingCommand = new LocationSettingCommand();
         NightvisionSettingCommand nightvisionSettingCommand = new NightvisionSettingCommand();
+        PlayerFlyEvent playerFlyEvent = new PlayerFlyEvent();
         guiManager = new GuiManager(this);
         storage = new Storage(this);
 
@@ -44,6 +45,7 @@ public final class KimiVanish extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(flySettingCommand, this);
         Bukkit.getServer().getPluginManager().registerEvents(locationSettingCommand, this);
         Bukkit.getServer().getPluginManager().registerEvents(this.hideManager, this);
+        Bukkit.getServer().getPluginManager().registerEvents(playerFlyEvent, this);
 
         if (Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             Bukkit.getServer().getLogger().log(Level.INFO, "PlaceholderAPI has been found! Enabling placeholder expansion...");

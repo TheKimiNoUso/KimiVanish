@@ -9,6 +9,7 @@ settings:
     hide-connection-message: true
     prevent-hunger-loss: true
     use-gui-list: true
+    warn-unhidden-flyers: false
 
 messages:
   vanish:
@@ -53,4 +54,5 @@ messages:
     flight:
       on: "&7You have toggled nightvision &aON"
       off: "&7You have toggled nightvision &cOFF"
+      warning: "&cYou are currently flying out of vanish."
     confirm-message: "&7You sent the message: &9{0}&7. Did you mean to do this? If so, &9resend the same message&7."

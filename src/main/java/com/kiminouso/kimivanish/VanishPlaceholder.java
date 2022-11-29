@@ -57,6 +57,8 @@ public class VanishPlaceholder extends PlaceholderExpansion {
             }
         } else if (params.equalsIgnoreCase("level")) {
             return String.valueOf(KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromPermission(player.getPlayer()));
+        } else if (params.equalsIgnoreCase("effective_level")) {
+            return String.valueOf(KimiVanish.getPlugin(KimiVanish.class).getHideManager().checkLevelFromMap(player.getPlayer()));
         } else {
             return null;
         }

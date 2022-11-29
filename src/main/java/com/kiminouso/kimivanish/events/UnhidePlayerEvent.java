@@ -7,7 +7,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-@Deprecated
 public class UnhidePlayerEvent extends PlayerEvent {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     @Getter private final Location playerLocation;
