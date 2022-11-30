@@ -15,6 +15,9 @@ public class PlayerFlyEvent implements Listener {
 
     @EventHandler
     private void onPlayerFly(PlayerMoveEvent event) {
+        if (!event.getPlayer().hasPermission("kimivanish.hide"))
+            return;
+
         if (!KimiVanish.getPlugin(KimiVanish.class).getConfig().getBoolean("settings.vanish.warn-unhidden-flyers"))
             return;
 
